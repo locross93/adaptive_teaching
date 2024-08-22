@@ -16,7 +16,7 @@ from src.programs.teacher import (
 from src.programs.functions.teacher import initialize_teacher
 from src.programs.functions.dataset import *
 from src.programs.utils import run_teaching_exp
-from src.programs.functions.exp_configs import *
+from src.programs.exp_configs import *
 from src.programs.concepts import *
 from src.programs.prog_configs import *
 from src.programs.functions.gpt_utils import *

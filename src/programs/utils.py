@@ -8,7 +8,7 @@ import wandb
 
 from src.programs.interpreter import *
 
-from src.exp_configs import *
+from src.programs.exp_configs import *
 from src.programs.bps import BayesianProgramSynthesizer, students_are_equal
 from src.programs.concepts import get_concept_library_from_params
 from src.utils import write_file
@@ -150,6 +150,9 @@ def initialize_teaching_args(
         ], f"'assume_known_prior' not in teaching_params but strategy != 'random'"
 
     gpt_args = None
+    # TEMP
+    GPT_STRATEGIES = ["gpt", "gpt4", "gpt4_known"]
+    GPT_COMBINED_STRATEGIES = []
     if strategy in GPT_STRATEGIES:
 
         gpt_args = initialize_gpt_args_func(config, gpt_helper, ordered_student_params)
@@ -308,6 +311,8 @@ def run_teaching_exp(
             break
 
         # if isinstance(teacher, GPTProgramTeacher):
+        GPT_STRATEGIES = ["gpt", "gpt4", "gpt4_known"]
+        GPT_COMBINED_STRATEGIES = []
         if strategy in GPT_STRATEGIES:
             x = teacher.select()
 
@@ -363,6 +368,7 @@ def run_teaching_exp(
             in that case, just terminate early
             """
             # TODO: if do this, what to do with the eval post iterations?
+            GPT_STRATEGIES = []
             if strategy in GPT_STRATEGIES:
                 global_results["reason_for_finish"] = (
                     "GPT generated an answer that is not the same as "

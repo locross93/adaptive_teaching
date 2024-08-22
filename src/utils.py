@@ -6,7 +6,7 @@ import torch
 import pickle
 import wandb
 
-from src.exp_configs import *
+from src.programs.exp_configs import *
 from src.eval import get_auc
 
 
@@ -31,6 +31,8 @@ def end_teacher_log(
     """
 
     strategy = teaching_params["strategy"]
+    GPT_STRATEGIES = ["gpt4"]
+    GPT_ONLY_STRATEGIES = []
     if strategy in GPT_ONLY_STRATEGIES:
         # if not assume_known_prior, then log student guess
         if not teaching_params["assume_known_prior"]:

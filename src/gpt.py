@@ -70,6 +70,9 @@ class GPT:
         if self.model_name == "gpt-4-0314":
             prompt_tok_cost = 0.03 / 1000
             completion_tok_cost = 0.06 / 1000
+        elif self.model_name == "gpt-4o":
+            prompt_tok_cost = 5e-06
+            completion_tok_cost = 1.5e-05, 
         else:
             raise NotImplementedError()
 
@@ -92,12 +95,20 @@ class GPT:
             and appends output as new message"""
             while True:
                 try:
-                    completion = openai.ChatCompletion.create(
+                    # completion = openai.ChatCompletion.create(
+                    #     model=self.model_name,
+                    #     messages=self.messages,
+                    #     max_tokens=max_tokens,
+                    #     temperature=temperature,
+                    #     seed=self.seed,
+                    # )
+                    completion = openai.chat.completions.create(
                         model=self.model_name,
                         messages=self.messages,
                         max_tokens=max_tokens,
                         temperature=temperature,
-                        seed=self.seed,
+                        n=1,  # This is usually included to specify the number of completions
+                        user=str(self.seed)
                     )
                     break
                 except openai.error.RateLimitError:
@@ -105,7 +116,8 @@ class GPT:
                     print("rate limit error; waiting 10 secs...")
                     time.sleep(10)
                     continue
-            output = completion.choices[0].message["content"]
+            #output = completion.choices[0].message["content"]
+            output = completion.choices[0].message.content
             self.messages.append({"role": "assistant", "content": output})
             self.usages.append(completion.usage)
 

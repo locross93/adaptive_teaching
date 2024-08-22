@@ -63,13 +63,13 @@ def get_configs():
     """Helper function to get all experimental configurations for fractions"""
     strategies = [
         # TEACHING_PARAMS["ranking_known"],
-        # TEACHING_PARAMS["ranking_unknown"],
-        # TEACHING_PARAMS["non-adaptive_known"],
-        # TEACHING_PARAMS["non-adaptive"],
-        # TEACHING_PARAMS["atom"],
+        TEACHING_PARAMS["ranking_unknown"],
+        TEACHING_PARAMS["non-adaptive_known"],
+        TEACHING_PARAMS["non-adaptive"],
+        TEACHING_PARAMS["atom"],
         TEACHING_PARAMS["gpt4"],
         # TEACHING_PARAMS["gpt4_known"],
-        # TEACHING_PARAMS["random"],
+        TEACHING_PARAMS["random"],
     ]
     base_config = {
         "seed": 0,
@@ -119,13 +119,10 @@ def get_configs():
 
     set_random_seeds(0)
 
-    # for seed in [
-    #     0,
-    #     1,
-    #     2,
-    # ]:
     for seed in [
         0,
+        1,
+        2,
     ]:
         students = ["add_generalizer", "multiply_generalizer"]
         student_population_params = [
@@ -319,99 +316,83 @@ def run_exp(config, wandb_project="pedagogy_lists", exp_notes=None, tag=None):
 
     progs_reps = get_prog_reps(interp, str_progs, concepts)
 
-    run = wandb.init(
-        project=wandb_project,
-        notes=exp_notes,
-        tags=tags,
-        reinit=True,
-        config=config
-    )
 
     for t_idx, teaching_params in enumerate(teaching_params_lst):
-        try:
-            print(f"Starting iteration {t_idx} for strategy: {teaching_params['strategy']}")
-            
-            run_config = config.copy()
-            run_config.update({"teaching_params": teaching_params})
-            strategy = teaching_params["strategy"]
+        run_config = config.copy()
+        run_config.update({"teaching_params": teaching_params})
 
-            # Update wandb config for this iteration
-            wandb.config.update({"strategy": strategy}, allow_val_change=True)
-            
-            print(f"Strategy: {strategy} ({t_idx+1}/{len(teaching_params_lst)})")
-            
-            set_random_seeds(seed)
+        strategy = teaching_params["strategy"]
 
-            student_concepts = get_concept_library_from_params(
-                interp, student_concept_params
-            )
+        sleep(1)
+        print("======================================================")
+        print(f"Strategy: {strategy} ({t_idx+1}/{len(teaching_params_lst)})")
 
-            student = BayesianProgramSynthesizer(
-                str_progs,
-                interp,
-                student_concepts,
-                dataset,
-                progs_reps=progs_reps,
-                prog_to_canonicalized=prog_to_canonicalized,
-                canonicalized_to_prog=canonicalized_to_prog,
-                noise=config["student_noise"],
-                outputs_by_inp=outputs_by_inp,
-            )
-            if tuple_progs not in tuple_progs_to_outputs_by_inp:
-                tuple_progs_to_outputs_by_inp[tuple_progs] = student.outputs_by_inp.copy()
-            write_outputs_by_inp(
-                tuple_progs_to_outputs_by_inp, file_name=args.outputs_by_inp_file
-            )
+        set_random_seeds(seed)
 
-            print_beliefs(student, target_prog, str_progs)
+        student_concepts = get_concept_library_from_params(
+            interp, student_concept_params
+        )
 
-            save_initial_files(
-                run_config,
-                student,
-            )
+        student = BayesianProgramSynthesizer(
+            str_progs,
+            interp,
+            student_concepts,
+            dataset,
+            progs_reps=progs_reps,
+            prog_to_canonicalized=prog_to_canonicalized,
+            canonicalized_to_prog=canonicalized_to_prog,
+            noise=config["student_noise"],
+            outputs_by_inp=outputs_by_inp,
+        )
+        if tuple_progs not in tuple_progs_to_outputs_by_inp:
+            tuple_progs_to_outputs_by_inp[tuple_progs] = student.outputs_by_inp.copy()
+        write_outputs_by_inp(
+            tuple_progs_to_outputs_by_inp, file_name=args.outputs_by_inp_file
+        )
 
-            progs_to_eval_on_inputs = [
-                ("(is_multiply x_)", "x_is_multiply"),
-                ("(is_add x_)", "x_is_add"),
-                ("(is_common_denoms x_)", "x_is_common_denoms"),
-            ]
+        wandb_name = teaching_params["id"]
 
-            gpt_helper = FractionGPTHelper()
+        run = wandb.init(
+            config=run_config,
+            project=wandb_project,
+            name=wandb_name,
+            reinit=True,
+            notes=exp_notes,
+            tags=tags,
+        )
 
-            # Update strategy in wandb config
-            #wandb.config.update({"strategy": strategy}, allow_val_change=True)
-            
-            # Log the start of a new strategy
-            wandb.log({"strategy": strategy, "iteration": t_idx})
-            
-            print("Starting run_teaching_exp")
-            results = run_teaching_exp(
-                student,
-                teaching_params,
-                dataset,
-                target_prog,
-                run_config,
-                gpt_helper,
-                initialize_teacher,
-                initialize_gpt_args,
-                progs_to_eval_on_inputs=progs_to_eval_on_inputs,
-                map_inputs_to_str=True,
-                special_datasets=special_datasets,
-            )
-            print("Finished run_teaching_exp")
-            
-            # Log results for this strategy
-            wandb.log({f"{strategy}_results": results})
-            
-            print(f"Finished iteration {t_idx}")
-        except Exception as e:
-            print(f"An error occurred during iteration {t_idx}: {e}")
-            import traceback
-            traceback.print_exc()
+        print_beliefs(student, target_prog, str_progs)
 
-    run.finish()
+        wandb.config.update({"strategy": strategy})
 
-    
+        save_initial_files(
+            run_config,
+            student,
+        )
+
+        progs_to_eval_on_inputs = [
+            ("(is_multiply x_)", "x_is_multiply"),
+            ("(is_add x_)", "x_is_add"),
+            ("(is_common_denoms x_)", "x_is_common_denoms"),
+        ]
+
+        gpt_helper = FractionGPTHelper()
+
+        run_teaching_exp(
+            student,
+            teaching_params,
+            dataset,
+            target_prog,
+            run_config,
+            gpt_helper,
+            initialize_teacher,
+            initialize_gpt_args,
+            progs_to_eval_on_inputs=progs_to_eval_on_inputs,
+            map_inputs_to_str=True,
+            special_datasets=special_datasets,
+        )
+
+        run.finish()
 
 
 def parse_gpt_student_type(teacher, student_concept_params, population_params):

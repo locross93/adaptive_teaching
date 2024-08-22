@@ -1,4 +1,4 @@
-WANDB_PROJECT=fractions
+WANDB_PROJECT=adapt_fractions
 
 TAG=main
 
