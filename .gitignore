@@ -1,4 +1,4 @@
 analysis/score_diffs.pkl
 
 # ignore wandb and subdirectories
-wandb/
+wandb/*
