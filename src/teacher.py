@@ -1,7 +1,24 @@
 import re
+import logging
 
 from src.gpt import GPT
+from datetime import datetime
 
+# # Set up logging without timestamps
+# logging.basicConfig(filename='logs/gpt_interactions.log', level=logging.INFO, format='%(message)s')
+
+# # Create a custom logger to avoid logging HTTP requests
+# gpt_logger = logging.getLogger('gpt_interactions')
+# gpt_logger.propagate = False  # This prevents the log messages from being sent to the root logger
+
+# Get the current date and time
+timestamp = datetime.now().strftime("%m-%d-%y_%H-%M-%S")
+# log to logs/interactions_<timestamp>.log
+logging_file = f'logs/interactions_{timestamp}.log'
+
+def log_info(message):
+    with open(logging_file, 'a') as log_file:
+        log_file.write(message + '\n')
 
 class Teacher:
     """Base Class"""
@@ -297,6 +314,9 @@ class GPTTeacher(GPT, Teacher):
     def update_predictions(self, inp, pred):
         """Gives prediction to GPT Model and parses response to get label for that input + next input"""
 
+        # Log the input and prediction
+        log_info(f"Input: {inp}, Prediction: {pred}")
+
         pred_msg = ""
 
         # If student didn't learn from previous example, tell GPT
@@ -310,9 +330,13 @@ class GPTTeacher(GPT, Teacher):
         pred_msg += self.get_formatted_inp_out(inp, pred)
         self.messages.append({"role": "user", "content": pred_msg})
         self.parsed_messages.append({})  # TODO: hacky
+        # Log the message sent to GPT
+        log_info(f"Message sent to GPT: {pred_msg}")
 
         # Get response to pred. Should include gold answer *and* next input
         response = self.call()
+        # Log the response from GPT
+        log_info(f"Response from GPT: {response}")
 
         gold_out = self.get_gold_output(inp)
         if self.use_gold_output:
@@ -349,6 +373,8 @@ class GPTTeacher(GPT, Teacher):
                 }
             )
             self.next_inp = new_inp
+            # Log the constructed GPT message
+            log_info(f"Constructed GPT message: {gpt_message}")
         else:
             """
             First try parsing the output; if doesn't work, say couldn't understand ask for answer.
@@ -393,6 +419,8 @@ class GPTTeacher(GPT, Teacher):
                 ), f"new_inp: {new_inp}; parsed_inp: {parsed_inp}; response: '{response}'"
 
                 self.parsed_messages.append(parsed_message)
+                # Log the parsed output and new input
+                log_info(f"Parsed output: {out}, New input: {new_inp}")
 
             if out != gold_out:
                 print(
@@ -439,6 +467,11 @@ class GPTTeacher(GPT, Teacher):
 
         # TODO: add something for when outputs are ignored?
         self.observations.append({"input": inp, "output": out, "prediction": pred})
+
+        # Log the final observation
+        log_info(f"Observation: Input: {inp}, Output: {out}, Prediction: {pred}")
+        # log a blank line to separate the interactions
+        log_info("")
 
         return out
 

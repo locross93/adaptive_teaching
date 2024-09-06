@@ -95,13 +95,6 @@ class GPT:
             and appends output as new message"""
             while True:
                 try:
-                    # completion = openai.ChatCompletion.create(
-                    #     model=self.model_name,
-                    #     messages=self.messages,
-                    #     max_tokens=max_tokens,
-                    #     temperature=temperature,
-                    #     seed=self.seed,
-                    # )
                     completion = openai.chat.completions.create(
                         model=self.model_name,
                         messages=self.messages,

@@ -8,6 +8,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from datetime import datetime
 from src.eval import *
 from src.programs.interpreter import Interpreter
 from src.programs.synthesizer import *
@@ -66,10 +67,10 @@ def get_configs():
         # TEACHING_PARAMS["ranking_unknown"],
         # TEACHING_PARAMS["non-adaptive_known"],
         # TEACHING_PARAMS["non-adaptive"],
-        # TEACHING_PARAMS["atom"],
+        #TEACHING_PARAMS["atom"],
         TEACHING_PARAMS["gpt4"],
         # TEACHING_PARAMS["gpt4_known"],
-        # TEACHING_PARAMS["random"],
+        #TEACHING_PARAMS["random"],
     ]
     base_config = {
         "seed": 0,
@@ -99,20 +100,20 @@ def get_configs():
                 },
             },
         },
-        "multiply_generalizer": {
-            "student_noise": 0.8,
-            "student_concept_params": {
-                "id": "multiply_generalizer",
-                "single_description": "student who performs multiplication correctly, but tends to incorrectly add both numerators and denominators when adding fractions, especially when denominators are different",
-                "plural_description": "Students who perform multiplication correctly, but tend to incorrectly add both numerators and denominators when adding fractions, especially when denominators are different",
-                "concept_probs": {
-                    "add_nums_and_denoms": 1e5,
-                    "add_both_if_diff_denoms_else_nums": 1e5,
-                    "multiply_nums_and_denoms": 1e5,
-                    "DEFAULT": 1,
-                },
-            },
-        },
+        # "multiply_generalizer": {
+        #     "student_noise": 0.8,
+        #     "student_concept_params": {
+        #         "id": "multiply_generalizer",
+        #         "single_description": "student who performs multiplication correctly, but tends to incorrectly add both numerators and denominators when adding fractions, especially when denominators are different",
+        #         "plural_description": "Students who perform multiplication correctly, but tend to incorrectly add both numerators and denominators when adding fractions, especially when denominators are different",
+        #         "concept_probs": {
+        #             "add_nums_and_denoms": 1e5,
+        #             "add_both_if_diff_denoms_else_nums": 1e5,
+        #             "multiply_nums_and_denoms": 1e5,
+        #             "DEFAULT": 1,
+        #         },
+        #     },
+        # },
     }
 
     configs = []
@@ -127,7 +128,8 @@ def get_configs():
     for seed in [
         0,
     ]:
-        students = ["add_generalizer", "multiply_generalizer"]
+        #students = ["add_generalizer", "multiply_generalizer"]
+        students = ["add_generalizer"]
         student_population_params = [
             student_params[s]["student_concept_params"] for s in students
         ]
@@ -319,8 +321,18 @@ def run_exp(config, wandb_project="pedagogy_lists", exp_notes=None, tag=None):
 
     progs_reps = get_prog_reps(interp, str_progs, concepts)
 
+    # Get the current date and time
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+    # Get the learner type
+    learner_type = config['student_concept_params']['id']
+
+    # Create a custom run name
+    run_name = f"{learner_type}_{timestamp}"
+
     run = wandb.init(
         project=wandb_project,
+        name=run_name,
         notes=exp_notes,
         tags=tags,
         reinit=True,

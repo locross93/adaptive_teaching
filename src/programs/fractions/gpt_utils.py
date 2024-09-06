@@ -254,7 +254,7 @@ class FractionGPTHelper:
 
     def get_teacher_end_prompt(self, student_concept_params):
         student_descriptions = self.get_student_descriptions(student_concept_params)
-        assert len(student_concept_params) == 2
+        # assert len(student_concept_params) == 2
         end = f"""Based on this interaction, which kind of student do you think I was at the start of this teaching session:
     {student_descriptions}
 
