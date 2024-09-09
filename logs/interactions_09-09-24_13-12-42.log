@@ -1,0 +1,20 @@
+Input: 2/3*4/3, Prediction: 8/3
+Response from GPT: 1. The correct way to solve 2/3 * 4/3 is to multiply the numerators together and the denominators together:
+   - Numerators: 2 * 4 = 8
+   - Denominators: 3 * 3 = 9
+   So, 2/3 * 4/3 = 8/9.
+
+2. The student's prediction of 8/3 is incorrect.
+
+3. RESPONSE_TO_STUDENT: That's incorrect. 2/3 * 4/3 = 8/9.
+
+What is 1/4 + 2/4?
+Next example reasoning: 1. The student seems to have a misconception about multiplying fractions, specifically multiplying only the numerators and not the denominators.
+
+2. A multiplication example would best address this misconception.
+
+3. A specific fraction problem that would be informative is one where the denominators are different, to see if the student tries to make common denominators before multiplying.
+
+NEXT_EXAMPLE: What is 3/5 * 2/7?
+Observation: Input: 2/3*4/3, Output: 8/9, Prediction: 8/3
+

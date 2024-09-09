@@ -1,0 +1,18 @@
+Input: 3/4+2/5, Prediction: 23/20
+Response from GPT: 1. To solve 3/4 + 2/5, we need to find a common denominator. The least common denominator of 4 and 5 is 20. 
+
+   - Convert 3/4 to a fraction with a denominator of 20: (3 * 5) / (4 * 5) = 15/20.
+   - Convert 2/5 to a fraction with a denominator of 20: (2 * 4) / (5 * 4) = 8/20.
+
+   Now, add the fractions: 15/20 + 8/20 = 23/20.
+
+2. The student's prediction of 23/20 is correct.
+
+3. RESPONSE_TO_STUDENT: That's correct. 3/4 + 2/5 = 23/20.
+Next example reasoning: 1. The student seems to understand addition of fractions correctly, as they correctly predicted the answer to 3/4 + 2/5. However, based on the initial description, the student might have a misconception about multiplying fractions, particularly by only multiplying the numerators and not the denominators.
+
+2. To address this misconception, a multiplication example would be most informative.
+
+3. A specific fraction problem that would be informative is one where the denominators are equal, as this might be where the student tends to make mistakes.
+
+NEXT_EXAMPLE: What is 3/4 * 2/4?

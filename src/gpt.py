@@ -81,7 +81,7 @@ class GPT:
             cost += completion_tok_cost * usage["completion_tokens"]
         return cost
 
-    def call(self, max_tokens=100, temperature=0.5):
+    def call(self, max_tokens=4000, temperature=0.2):
 
         key = self.get_cache_key(max_tokens, temperature, self.messages, self.seed)
 

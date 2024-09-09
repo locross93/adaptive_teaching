@@ -420,6 +420,12 @@ def run_exp(config, wandb_project="pedagogy_lists", exp_notes=None, tag=None):
             print(f"An error occurred during iteration {t_idx}: {e}")
             import traceback
             traceback.print_exc()
+        except KeyboardInterrupt:
+            print("Experiment interrupted by user")
+        finally:
+            # Ensure wandb finishes uploading
+            if wandb.run is not None:
+                wandb.finish()
 
     run.finish()
 

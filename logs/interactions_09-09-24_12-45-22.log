@@ -1,0 +1,19 @@
+Input: 2/3*3/4, Prediction: 72/12
+Response from GPT: 1. The correct way to solve 2/3 * 3/4 is to multiply the numerators together and the denominators together:
+   - Numerators: 2 * 3 = 6
+   - Denominators: 3 * 4 = 12
+   - So, 2/3 * 3/4 = 6/12
+
+2. The student's prediction of 72/12 is incorrect because they seem to have multiplied the numerators and denominators incorrectly.
+
+3. RESPONSE_TO_STUDENT: That's incorrect. 2/3 * 3/4 = 6/12.
+Next example reasoning: 1. The student seems to have a misconception about multiplying fractions. They incorrectly multiplied the numerators and denominators in a way that resulted in 72/12, which suggests they might be multiplying the numerators and denominators in a non-standard way.
+
+2. A multiplication example would best address this misconception, as it directly targets the student's misunderstanding of how to multiply fractions correctly.
+
+3. A specific fraction problem that would be informative is one where the denominators are different, to see if the student tries to make common denominators before multiplying.
+
+NEXT_EXAMPLE: What is 1/2 * 2/5?
+Constructed GPT message: That's incorrect. 2/3*3/4=6/12. What is What is 1/2 * 2/5??
+Observation: Input: 2/3*3/4, Output: 6/12, Prediction: 72/12
+

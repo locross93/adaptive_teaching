@@ -1,0 +1,39 @@
+Input: 3/4+2/5, Prediction: 23/20
+Response from GPT: 1. To solve 3/4 + 2/5, we need to find a common denominator. The least common denominator (LCD) of 4 and 5 is 20. 
+
+   - Convert 3/4 to a fraction with a denominator of 20: 
+     \( \frac{3}{4} = \frac{3 \times 5}{4 \times 5} = \frac{15}{20} \)
+   - Convert 2/5 to a fraction with a denominator of 20: 
+     \( \frac{2}{5} = \frac{2 \times 4}{5 \times 4} = \frac{8}{20} \)
+
+   - Add the two fractions:
+     \( \frac{15}{20} + \frac{8}{20} = \frac{23}{20} \)
+
+2. The student's prediction of 23/20 is correct.
+
+3. RESPONSE_TO_STUDENT: That's correct. 3/4 + 2/5 = 23/20.
+
+What is 2/3 * 4/5?
+Next example reasoning: 1. The student correctly solved the addition problem, so they understand how to add fractions. However, based on the initial description, the student might have a misconception about multiplying fractions, particularly by incorrectly multiplying only the numerators or making common denominators before multiplying.
+
+2. A multiplication example would best address this misconception.
+
+3. A specific fraction problem that would be informative is one where the denominators are different, to see if the student tries to make common denominators before multiplying.
+
+NEXT_EXAMPLE: What is 3/4 * 2/5?
+Constructed GPT message: That's correct. 3/4+2/5=23/20. What is What is 3/4 * 2/5??
+Observation: Input: 3/4+2/5, Output: 23/20, Prediction: 23/20
+
+Input: 3/4*2/4, Prediction: 6/4
+Response from GPT: 1. The correct way to solve 3/4 * 2/4 is to multiply the numerators together and the denominators together. So, (3 * 2) / (4 * 4) = 6/16.
+2. The student's prediction of 6/4 is incorrect because they only multiplied the numerators and did not multiply the denominators correctly.
+
+RESPONSE_TO_STUDENT: That's incorrect. 3/4 * 2/4 = 6/16.
+Next example reasoning: 1. The student seems to have a misconception about multiplying fractions, specifically only multiplying the numerators and not the denominators.
+2. A multiplication example would best address this misconception.
+3. A specific fraction problem with different denominators would be most informative to clarify this misconception.
+
+NEXT_EXAMPLE: What is 2/3 * 3/5?
+Constructed GPT message: That's incorrect. 3/4*2/4=6/16. What is What is 2/3 * 3/5??
+Observation: Input: 3/4*2/4, Output: 6/16, Prediction: 6/4
+

@@ -1,0 +1,14 @@
+Input: 2/3*4/3, Prediction: 8/3
+Message sent to GPT: 2/3*4/3=8/3
+Response from GPT: FINAL_RESPONSE: That's incorrect. 2/3 * 4/3 = 8/9. What is 1/4 + 3/4?
+Constructed GPT message: That's incorrect. 2/3*4/3=8/9. What is 1/4+3/4?
+Observation: Input: 2/3*4/3, Output: 8/9, Prediction: 8/3
+
+Input: 1/4+3/4, Prediction: 4/4
+Message sent to GPT: 1/4+3/4=4/4
+Response from GPT: FINAL_RESPONSE: That's correct. 1/4+3/4=4/4. What is 3/5*2/5?
+Constructed GPT message: That's correct. 1/4+3/4=4/4. What is 3/5*2/5?
+Observation: Input: 1/4+3/4, Output: 4/4, Prediction: 4/4
+
+Input: 3/5*2/5, Prediction: 6/5
+Message sent to GPT: 3/5*2/5=6/5

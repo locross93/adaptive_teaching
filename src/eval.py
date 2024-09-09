@@ -11,11 +11,14 @@ def get_auc(values, target_length=None):
 
     assert target_length >= len(values), f"{target_length} < {len(values)}"
 
+    if len(values) == 0:
+        breakpoint()
+
     # if target_length is not None, extend the values to the target length by repeating the last value
     if target_length is not None:
         while len(values) < target_length:
             values.append(values[-1])
-
+    
     assert len(values) == target_length
 
     return np.mean(values)

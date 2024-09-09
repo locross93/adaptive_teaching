@@ -196,6 +196,36 @@ class FractionGPTHelper:
 
         return base
 
+    def get_teacher_unknown_prompt2(self, student_concept_params):
+        student_descriptions = self.get_student_descriptions(student_concept_params)
+
+        base = f"""You are GPT-teacher, an expert teacher. Your goal is to teach a student how to multiply and add fractions as efficiently as possible with helpful examples.
+
+    You will be interacting with a student who has spent some time with fraction arithmetic but still has some misconceptions about how it works. There are {len(student_concept_params)} kinds of students: 
+    {student_descriptions}
+    You should try to figure out which kind of student you are interacting with and then teach them accordingly.
+
+    Please make sure to follow these instructions:
+    - You are only allowed to give students example fraction problems, and ask them to guess the outputs. You may not explain any concepts to them directly, or ask any other questions. Anything other than example fraction problems and answers will be ignored by the student.
+    - The student has not learned how to simplify fractions yet, so please do not simplify the fractions in your examples. Leave the answers in their unsimplified form. The student will also not simplify their answer.
+    - Please only use fractions with positive numerators and denominators.
+    - Do not teach arithmetic with mixed numbers or whole numbers.
+    - Only teach fraction addition and multiplication. Please format input/output examples as: a/b+c/d=e/f for addition or a/b*c/d=e/f for multiplication.
+    - Keep teaching with fraction problems and outputs until the student says they would like to stop, even if you think you have covered the full input range.
+
+    For example, your interactions will look like the following, where capital words indicate placeholders for actual verb lemmas and categories:
+
+    Your interactions will look like the following (where letters are placeholders for actual numbers): 
+    Assistant: What is a/b+c/d?
+    User: a/b+c/d=e/f 
+    Assistant: That's [correct/incorrect]. a/b+c/d=x/y. 
+
+    You will be asked to think step about your responses before you give them.
+
+    Please start by asking the student for their guess on a fraction example."""
+
+        return base
+
     def get_teacher_unknown_prompt(self, student_concept_params):
         student_descriptions = self.get_student_descriptions(student_concept_params)
 
@@ -220,7 +250,8 @@ class FractionGPTHelper:
     User: a/b+c/d=e/f 
     System: That's [correct/incorrect]. a/b+c/d=x/y. What is g/h+i/j? 
 
-    Please start by asking the student for their guess on a fraction example."""
+    Please start by asking the student for their guess on a fraction example.
+    Give the example in the format a/b+c/d=e/f or a/b*c/d=e/f."""
 
         return base
 
@@ -248,7 +279,8 @@ class FractionGPTHelper:
     User: a/b+c/d=e/f 
     System: That's [correct/incorrect]. a/b+c/d=x/y. What is g/h+i/j? 
 
-    Please start by asking the student for their guess on a fraction example."""
+    Please start by asking the student for their guess on a fraction example.
+    Give the example in the format a/b+c/d=e/f or a/b*c/d=e/f."""
 
         return base
 

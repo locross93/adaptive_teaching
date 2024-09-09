@@ -1,0 +1,23 @@
+Input: 1/3+2/5, Prediction: 11/15
+Response from GPT: 1. The correct way to solve 1/3 + 2/5 is to find a common denominator. The least common denominator of 3 and 5 is 15. 
+
+   - Convert 1/3 to a fraction with a denominator of 15: (1 * 5) / (3 * 5) = 5/15.
+   - Convert 2/5 to a fraction with a denominator of 15: (2 * 3) / (5 * 3) = 6/15.
+   - Add the fractions: 5/15 + 6/15 = 11/15.
+
+2. The student's prediction of 11/15 is correct.
+
+3. RESPONSE_TO_STUDENT: That's correct. 1/3 + 2/5 = 11/15.
+
+What is 2/4 * 3/4?
+Next example reasoning: 1. The student has shown they can correctly add fractions, but they might have misconceptions about multiplying fractions, particularly when the denominators are equal. They might incorrectly multiply only the numerators or make common denominators before multiplying.
+
+2. A multiplication example would best address this misconception.
+
+3. A specific fraction problem where the denominators are equal would be most informative to clarify this misconception.
+
+NEXT_EXAMPLE: 2/5 * 3/5
+Next example: 2/5 * 3/5
+Constructed GPT message: That's correct. 1/3+2/5=11/15. What is 2/5 * 3/5?
+Observation: Input: 1/3+2/5, Output: 11/15, Prediction: 11/15
+

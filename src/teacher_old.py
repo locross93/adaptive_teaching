@@ -162,7 +162,6 @@ class GPTTeacher(GPT, Teacher):
             print("tried to parse: ", message)
             #                self.messages.append({"role": "user", "content": "Please give a properly formatted input and output."})
             #                continue
-            breakpoint()
             assert False
         return x
 
@@ -312,114 +311,7 @@ class GPTTeacher(GPT, Teacher):
                 response = self.call()
         return response, parsed_message
 
-    def react_reasoning(self, inp, pred):
-        prompt = f"""Think through this step-by-step:
-        1. What is the correct way to solve {inp} and what is the answer?
-        2. Is the student's prediction of {pred} correct?
-        3. In the 3rd part of your response after thinking through these steps, provide a direct response to the student in the following format:
-        RESPONSE_TO_STUDENT: That's [correct/incorrect]. a/b+c/d=x/y.
-        You'll be asked to provide a new example in a separate response after this.
-        """
-        self.messages.append({"role": "user", "content": prompt})
-        response = self.call()
-        
-        # Parse the final response
-        final_response = re.search(r'RESPONSE_TO_STUDENT: (.*)', response)
-        if final_response:
-            return response, final_response.group(1)
-        else:
-            raise ValueError("Could not parse final response from ReACT output")
-
-    def generate_next_example(self):
-        prompt = f"""Based on the student's previous responses, think through these steps:
-        1. What misconceptions might the student have about fraction arithmetic?
-        2. What type of example (addition or multiplication) (common denominators or different denominators) would best address this misconception?
-        3. What specific fraction problem would be most informative to clarify this misconception?
-
-        After thinking through these steps, provide your next teaching example in the following format:
-        NEXT_EXAMPLE: What is a/b+c/d
-        or
-        NEXT_EXAMPLE: What is a/b*c/d
-        """
-        self.messages.append({"role": "system", "content": prompt})
-        response = self.call()
-        
-        # Parse the next example
-        next_example = re.search(r'NEXT_EXAMPLE: (.*)', response)
-        if next_example:
-            return response, next_example.group(1)
-        else:
-            raise ValueError("Could not parse next example from output")
-
     def update_predictions(self, inp, pred):
-        # Log the input and prediction
-        log_info(f"Input: {inp}, Prediction: {pred}")
-
-        # Use ReACT reasoning
-        full_response, answer_response = self.react_reasoning(inp, pred)
-        log_info(f"Response from GPT: {full_response}")
-        self.messages.append({"role": "assistant", "content": full_response})
-
-        # Generate the next example separately
-        next_example_full, next_example = self.generate_next_example()
-        self.messages.append({"role": "assistant", "content": next_example_full})
-        log_info(f"Next example reasoning: {next_example_full}")
-
-        gold_out = self.get_gold_output(inp)
-
-        if self.use_gold_output:
-            out = gold_out
-            parsed_message = {}
-            response, parsed_message = self.get_input(next_example, parsed_message)
-        else:
-            response, parsed_message = self.get_output(inp, response, pred)
-            out = parsed_message["label"]
-            parsed_inp = parsed_message["inp"]
-
-            if out != gold_out:
-                log_info(f"Warning: The answer given by ChatGPT {out} != gold answer {gold_out}")
-
-            if str(parsed_inp) != str(inp):
-                log_info(f"Warning: The parsed input {parsed_inp} is not the same as what was expected {inp}")
-                student_response = self.get_student_diff_answer_response(inp)
-                self.messages.append({"role": "user", "content": student_response})
-                self.parsed_messages.append({})
-                response = self.call()
-                parsed_message = {}
-                parsed_inp, out, output_pattern = self.parse_output(response)
-                parsed_message.update({"inp": parsed_inp, "label": out, "output_pattern": output_pattern})
-
-        # Update internal state
-        self.next_inp = parsed_message["next_inp"]
-        self.parsed_messages.append({
-            "next_inp": self.next_inp,
-            "label": str(out),
-        })
-
-        # Construct the message for the next round
-        # if self.use_gold_output:
-        #     if out == pred:
-        #         gpt_message = f"That's correct. {self.get_formatted_inp_out(inp, pred)}. What is {next_example}?"
-        #     else:
-        #         gpt_message = f"That's incorrect. {self.get_formatted_inp_out(inp, out)}. What is {next_example}?"
-        # else:
-        #     gpt_message = f"{response} What is {next_example}?"
-
-        # self.messages.append({"role": "assistant", "content": gpt_message})
-
-        # Log the constructed GPT message
-        # log_info(f"Constructed GPT message: {gpt_message}")
-
-        # Update observations
-        self.observations.append({"input": inp, "output": out, "prediction": pred})
-
-        # Log the final observation
-        log_info(f"Observation: Input: {inp}, Output: {out}, Prediction: {pred}")
-        log_info("")  # Blank line to separate interactions
-
-        return out
-
-    def update_predictions2(self, inp, pred):
         """Gives prediction to GPT Model and parses response to get label for that input + next input"""
 
         # Log the input and prediction
@@ -442,11 +334,9 @@ class GPTTeacher(GPT, Teacher):
         log_info(f"Message sent to GPT: {pred_msg}")
 
         # Get response to pred. Should include gold answer *and* next input
-        # Use ReACT reasoning
-        #full_response, answer_response = self.react_reasoning(inp, pred)
-        #response = self.call()
+        response = self.call()
         # Log the response from GPT
-        #log_info(f"Response from GPT: {full_response}")
+        log_info(f"Response from GPT: {response}")
 
         gold_out = self.get_gold_output(inp)
         if self.use_gold_output:
