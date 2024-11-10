@@ -151,7 +151,6 @@ class GPTTeacher(GPT, Teacher):
         message = self.call()
         try:
             x, input_pattern = self.parse_input(message)
-            # breakpoint()
             self.parsed_messages.append(
                 {"next_inp": str(x), "input_pattern": str(input_pattern)}
             )
@@ -375,7 +374,6 @@ class GPTTeacher(GPT, Teacher):
             self.next_inp = new_inp
             # Log the constructed GPT message
             log_info(f"Constructed GPT message: {gpt_message}")
-            breakpoint()
         else:
             """
             First try parsing the output; if doesn't work, say couldn't understand ask for answer.

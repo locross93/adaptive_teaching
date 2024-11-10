@@ -63,12 +63,12 @@ def initialize_gpt_args(config, gpt_helper, ordered_student_params):
 def get_configs():
     """Helper function to get all experimental configurations for fractions"""
     strategies = [
-        # TEACHING_PARAMS["ranking_known"],
-        # TEACHING_PARAMS["ranking_unknown"],
-        # TEACHING_PARAMS["non-adaptive_known"],
-        # TEACHING_PARAMS["non-adaptive"],
+        TEACHING_PARAMS["ranking_known"],
+        TEACHING_PARAMS["ranking_unknown"],
+        TEACHING_PARAMS["non-adaptive_known"],
+        TEACHING_PARAMS["non-adaptive"],
         #TEACHING_PARAMS["atom"],
-        TEACHING_PARAMS["gpt4"],
+        # TEACHING_PARAMS["gpt4"],
         # TEACHING_PARAMS["gpt4_known"],
         #TEACHING_PARAMS["random"],
     ]
@@ -86,34 +86,34 @@ def get_configs():
     }
 
     student_params = {
-        "add_generalizer": {
-            "student_noise": 0.8,
-            "student_concept_params": {
-                "id": "add_generalizer",
-                "single_description": "student who performs addition correctly, but tends to incorrectly multiply only numerators when multiplying fractions, especially when the denominators are equal; if the denominators are not equal, the student sometimes makes common denominators and then multiplies the numerators",
-                "plural_description": "Students who perform addition correctly, but tend to incorrectly multiply only numerators when multiplying fractions, especially when the denominators are equal; if the denominators are not equal, the student sometimes makes common denominators and then multiplies the numerators",
-                "concept_probs": {
-                    "make_common_denoms_and_multiply_nums": 1e5,
-                    "make_common_denoms_and_add_nums": 1e5,
-                    "multiply_nums_if_common_else_both": 1e5,
-                    "DEFAULT": 1,
-                },
-            },
-        },
-        # "multiply_generalizer": {
+        # "add_generalizer": {
         #     "student_noise": 0.8,
         #     "student_concept_params": {
-        #         "id": "multiply_generalizer",
-        #         "single_description": "student who performs multiplication correctly, but tends to incorrectly add both numerators and denominators when adding fractions, especially when denominators are different",
-        #         "plural_description": "Students who perform multiplication correctly, but tend to incorrectly add both numerators and denominators when adding fractions, especially when denominators are different",
+        #         "id": "add_generalizer",
+        #         "single_description": "student who performs addition correctly, but tends to incorrectly multiply only numerators when multiplying fractions, especially when the denominators are equal; if the denominators are not equal, the student sometimes makes common denominators and then multiplies the numerators",
+        #         "plural_description": "Students who perform addition correctly, but tend to incorrectly multiply only numerators when multiplying fractions, especially when the denominators are equal; if the denominators are not equal, the student sometimes makes common denominators and then multiplies the numerators",
         #         "concept_probs": {
-        #             "add_nums_and_denoms": 1e5,
-        #             "add_both_if_diff_denoms_else_nums": 1e5,
-        #             "multiply_nums_and_denoms": 1e5,
+        #             "make_common_denoms_and_multiply_nums": 1e5,
+        #             "make_common_denoms_and_add_nums": 1e5,
+        #             "multiply_nums_if_common_else_both": 1e5,
         #             "DEFAULT": 1,
         #         },
         #     },
         # },
+        "multiply_generalizer": {
+            "student_noise": 0.8,
+            "student_concept_params": {
+                "id": "multiply_generalizer",
+                "single_description": "student who performs multiplication correctly, but tends to incorrectly add both numerators and denominators when adding fractions, especially when denominators are different",
+                "plural_description": "Students who perform multiplication correctly, but tend to incorrectly add both numerators and denominators when adding fractions, especially when denominators are different",
+                "concept_probs": {
+                    "add_nums_and_denoms": 1e5,
+                    "add_both_if_diff_denoms_else_nums": 1e5,
+                    "multiply_nums_and_denoms": 1e5,
+                    "DEFAULT": 1,
+                },
+            },
+        },
     }
 
     configs = []
@@ -129,7 +129,7 @@ def get_configs():
         0,
     ]:
         #students = ["add_generalizer", "multiply_generalizer"]
-        students = ["add_generalizer"]
+        students = ["multiply_generalizer"]
         student_population_params = [
             student_params[s]["student_concept_params"] for s in students
         ]
@@ -422,10 +422,10 @@ def run_exp(config, wandb_project="pedagogy_lists", exp_notes=None, tag=None):
             traceback.print_exc()
         except KeyboardInterrupt:
             print("Experiment interrupted by user")
-        finally:
-            # Ensure wandb finishes uploading
-            if wandb.run is not None:
-                wandb.finish()
+        # finally:
+        #     # Ensure wandb finishes uploading
+        #     if wandb.run is not None:
+        #         wandb.finish()
 
     run.finish()
 

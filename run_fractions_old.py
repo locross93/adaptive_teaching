@@ -66,8 +66,8 @@ def get_configs():
         TEACHING_PARAMS["ranking_unknown"],
         TEACHING_PARAMS["non-adaptive_known"],
         TEACHING_PARAMS["non-adaptive"],
-        TEACHING_PARAMS["atom"],
-        TEACHING_PARAMS["gpt4"],
+        #TEACHING_PARAMS["atom"],
+        #TEACHING_PARAMS["gpt4"],
         # TEACHING_PARAMS["gpt4_known"],
         TEACHING_PARAMS["random"],
     ]

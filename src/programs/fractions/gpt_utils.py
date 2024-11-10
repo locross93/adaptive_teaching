@@ -216,11 +216,9 @@ class FractionGPTHelper:
     For example, your interactions will look like the following, where capital words indicate placeholders for actual verb lemmas and categories:
 
     Your interactions will look like the following (where letters are placeholders for actual numbers): 
-    Assistant: What is a/b+c/d?
+    System: What is a/b+c/d?
     User: a/b+c/d=e/f 
-    Assistant: That's [correct/incorrect]. a/b+c/d=x/y. 
-
-    You will be asked to think step about your responses before you give them.
+    System: That's [correct/incorrect]. a/b+c/d=x/y. What is g/h+i/j? 
 
     Please start by asking the student for their guess on a fraction example."""
 
